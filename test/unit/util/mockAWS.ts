@@ -1,4 +1,3 @@
-
 // Below is the general order of AWS Commands that need to be used.
 
 // headBucket - https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#headBucket-property
@@ -10,7 +9,7 @@
 // copyObject - https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#copyObject-property
 
 interface S3WaitForParameters {
-  Bucket: string;
+  Bucket: string
 }
 
 class MockS3 {
@@ -23,17 +22,17 @@ class MockS3 {
               Account: '123456789012',
               Arn: 'arn:aws:iam::123456789012:user/Alice',
               UserId: 'AKIAI44QH8DHBEXAMPLE'
-            });
+            })
           } else {
             resolve({
               Account: '123456789012',
               Arn: 'arn:aws:iam::123456789012:user/Alice',
               UserId: 'AKIAI44QH8DHBEXAMPLE'
-            });
+            })
           }
-        });
+        })
       }
-    };
+    }
   }
 
   listObjectsV2 () {
@@ -44,11 +43,12 @@ class MockS3 {
             Account: '123456789012',
             Arn: 'arn:aws:iam::123456789012:user/Alice',
             UserId: 'AKIAI44QH8DHBEXAMPLE'
-          });
-        });
+          })
+        })
       }
-    };
+    }
   }
+
   copyObject () {
     return {
       promise () {
@@ -57,15 +57,15 @@ class MockS3 {
             Account: '123456789012',
             Arn: 'arn:aws:iam::123456789012:user/Alice',
             UserId: 'AKIAI44QH8DHBEXAMPLE'
-          });
-        });
+          })
+        })
       }
-    };
+    }
   }
 }
 
 const MockAWS = {
   S3: MockS3
-};
+}
 
-export default MockAWS;
+export default MockAWS
