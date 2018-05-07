@@ -1,4 +1,11 @@
 {
+  "name": "typescript-aws-lambda",
+  "version": "0.0.1",
+  "description": "A package that manages and deploys AWS Lambda functions written in TypeScript.",
+  "author": "me@josephmcasey.com",
+  "keywords": ["aws", "lambda", "typescript", "ts", "webpack", "babel"],
+  "homepage": "https://github.com/josephmcasey/aws-lambda_codebuild-artifact-to-s3-website",
+  "private": true,
   "scripts": {
     "precompile-src": "rm -rf dist",
     "compile-src": "tsc -p tsconfig-src.json ",
