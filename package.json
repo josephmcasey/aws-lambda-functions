@@ -20,7 +20,8 @@
     "transpile-test-js": "BABEL_ENV=test babel dist-test --out-dir dist-test --source-maps",
     "precompile-test": "rm -rf dist-test",
     "compile-test": "yarn compile-test-ts && yarn transpile-test-js",
-    "build": "yarn compile-src && yarn webpack --display verbose --mode production",
+    "build": "yarn compile-src && yarn webpack --mode production",
+    "postbuild": "rm -rf dist/src",
     "lint": "tslint --fix --format codeFrame --project tsconfig.json 'src/**/*.ts' 'test/**/*.ts'",
     "pretest": "yarn lint && yarn compile-test",
     "test": "nyc ava 'dist-test/test/unit/**/*.test.js'"
