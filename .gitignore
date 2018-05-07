@@ -61,4 +61,5 @@ typings/
 .idea
 
 #
-work
+dist
+dist-test

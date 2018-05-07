@@ -1,18 +1,17 @@
 {
   "scripts": {
-    "precompile-src": "rm -rf work/dist",
+    "precompile-src": "rm -rf dist",
     "compile-src": "tsc -p tsconfig-src.json ",
-    "postcompile-src": "cp package.json work/dist",
+    "postcompile-src": "cp package.json dist",
     "compile-test-ts": "tsc -p tsconfig-test.json",
-    "transpile-test-js": "BABEL_ENV=test babel work/dist-test --out-dir work/dist-test --source-maps",
-    "precompile-test": "rm -rf work/dist-test",
+    "transpile-test-js": "BABEL_ENV=test babel dist-test --out-dir dist-test --source-maps",
+    "precompile-test": "rm -rf dist-test",
     "compile-test": "yarn compile-test-ts && yarn transpile-test-js",
-    "postcompile-test": "cp package.json work/dist-test",
+    "postcompile-test": "cp package.json dist-test",
     "build": "yarn compile-src && yarn webpack --mode production",
-    "bundle": "yarn build && ./tools/bin/zip-lambdas",
     "lint": "tslint --fix --format codeFrame --project tsconfig.json 'src/**/*.ts' 'test/**/*.ts'",
     "pretest": "yarn lint && yarn compile-test",
-    "test": "nyc ava 'work/dist-test/test/unit/**/*.test.js'"
+    "test": "nyc ava 'dist-test/test/unit/**/*.test.js'"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.3",

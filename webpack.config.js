@@ -7,7 +7,7 @@ const nodeBuiltins = require('builtin-modules');
 const lambdaDir = 'src/lambdas';
 const lambdaNames = fs.readdirSync(path.join(__dirname, lambdaDir));
 
-const DIST_DIR = path.join(__dirname, 'work/dist');
+const DIST_DIR = path.join(__dirname, 'dist');
 
 const entry = lambdaNames
   .reduce((entryMap, lambdaName) => {
@@ -30,7 +30,7 @@ module.exports = {
   externals,
 
   output: {
-    path: path.join(__dirname, 'work/dist'),
+    path: path.join(__dirname, 'dist'),
     libraryTarget: 'commonjs',
     filename: '[name]/index.js'
   },

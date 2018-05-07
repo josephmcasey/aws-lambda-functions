@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./work/dist-test",
+    "outDir": "./dist-test",
     "module": "commonjs"
   }
 }
