@@ -3,19 +3,24 @@
   "version": "0.0.1",
   "description": "A package that manages and deploys AWS Lambda functions written in TypeScript.",
   "author": "me@josephmcasey.com",
-  "keywords": ["aws", "lambda", "typescript", "ts", "webpack", "babel"],
+  "keywords": [
+    "aws",
+    "lambda",
+    "typescript",
+    "ts",
+    "webpack",
+    "babel"
+  ],
   "homepage": "https://github.com/josephmcasey/aws-lambda_codebuild-artifact-to-s3-website",
   "private": true,
   "scripts": {
     "precompile-src": "rm -rf dist",
-    "compile-src": "tsc -p tsconfig-src.json ",
-    "postcompile-src": "cp package.json dist",
+    "compile-src": "tsc -p tsconfig-src.json",
     "compile-test-ts": "tsc -p tsconfig-test.json",
     "transpile-test-js": "BABEL_ENV=test babel dist-test --out-dir dist-test --source-maps",
     "precompile-test": "rm -rf dist-test",
     "compile-test": "yarn compile-test-ts && yarn transpile-test-js",
-    "postcompile-test": "cp package.json dist-test",
-    "build": "yarn compile-src && yarn webpack --mode production",
+    "build": "yarn compile-src && yarn webpack --display verbose --mode production",
     "lint": "tslint --fix --format codeFrame --project tsconfig.json 'src/**/*.ts' 'test/**/*.ts'",
     "pretest": "yarn lint && yarn compile-test",
     "test": "nyc ava 'dist-test/test/unit/**/*.test.js'"
@@ -38,11 +43,12 @@
     "proxyquire": "^2.0.1",
     "require-self-ref": "^2.0.1",
     "source-map-support": "^0.5.4",
+    "ts-loader": "^4.2.0",
     "tslint": "^5.9.1",
     "tslint-config-standard": "^7.0.0",
     "typescript": "^2.8.3",
-    "webpack": "^4.6.0",
-    "webpack-cli": "^2.0.15"
+    "webpack": "^4.7.0",
+    "webpack-cli": "^2.1.3"
   },
   "dependencies": {
     "aws-sdk": "^2.226.1",

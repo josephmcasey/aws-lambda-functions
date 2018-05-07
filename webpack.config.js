@@ -49,7 +49,7 @@ module.exports = {
                     [
                         'env',
                         {
-                            // Latest Node.js runtime for AWS Lambda functions is currently 6.10
+                            // Latest Node.js runtime for AWS Lambda functions
                             targets: {
                                 node: '8.10'
                             },
