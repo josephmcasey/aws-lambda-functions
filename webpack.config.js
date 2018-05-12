@@ -25,6 +25,46 @@ const externals = ['aws-sdk']
     return externalsMap;
   }, {});
 
+
+const babelOptions = {
+  presets: [
+    [
+      'env',
+      {
+        // Latest Node.js runtime for AWS Lambda functions
+        targets: {
+          node: '8.10'
+        },
+        modules: false
+      }
+    ]
+  ]
+}
+
+const babelRule = {
+  test: /\.js$/,
+  exclude: [],
+  use: {
+    loader: 'babel-loader',
+    options: babelOptions
+  }
+}
+
+const typeScriptRule = {
+  test: /\.ts$/,
+  exclude: /node_modules/,
+  use: [
+    {
+      loader: 'babel-loader',
+      options: babelOptions
+    },
+    {
+      loader: 'ts-loader'
+    }
+  ]
+}
+
+
 module.exports = {
   entry,
   externals,
@@ -39,37 +79,16 @@ module.exports = {
 
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        exclude: [],
-        use: {
-            loader: 'babel-loader',
-            options: {
-                presets: [
-                    [
-                        'env',
-                        {
-                            // Latest Node.js runtime for AWS Lambda functions
-                            targets: {
-                                node: '8.10'
-                            },
-                            modules: false
-                        }
-                    ]
-                ],
-                // plugins: [
-                //     'external-helpers'
-                // ]
-            }
-        }
-      }
+      babelRule,
+      typeScriptRule
     ]
   },
 
   resolve: {
     alias: {
       '~': DIST_DIR
-    }
+    },
+    extensions: ['.ts', '.js']
   },
 
   devtool: 'source-map'
