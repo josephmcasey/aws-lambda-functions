@@ -60,6 +60,7 @@ typings/
 #JetBrains
 .idea
 
-#
+# CLI - Project Generated Files and Directories
 dist
 dist-test
+sam.prod.yaml

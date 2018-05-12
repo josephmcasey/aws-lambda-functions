@@ -22,7 +22,8 @@
     "compile-test": "yarn compile-test-ts && yarn transpile-test-js",
     "build": "yarn compile-src && yarn webpack --mode production",
     "postbuild": "rm -rf dist/src",
-    "deploy": "sam package --template-file sam.yaml --s3-bucket sam-artifacts-for-aws-lambda",
+    "sam:package": "sam package --template-file sam.yaml --s3-bucket sam-artifacts-for-aws-lambda --output-template-file sam.prod.yaml",
+    "sam:deploy": "aws cloudformation deploy --template-file ./sam.prod.yaml --capabilities CAPABILITY_IAM --tags 'cli=true' 'automation=true' 'name=Lambda Functions' --stack-name sam-stack-for-aws-lambda",
     "lint": "tslint --fix --format codeFrame --project tsconfig.json 'src/**/*.ts' 'test/**/*.ts'",
     "pretest": "yarn lint && yarn compile-test",
     "test": "nyc ava 'dist-test/test/unit/**/*.test.js'"
