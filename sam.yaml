@@ -11,11 +11,11 @@ Resources:
       CodeUri: ./dist/hello-world/
       FunctionName: HelloWorld
       Description: Example Lambda Function
-  InflateZip:
+  Unzip:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs8.10
       Handler: index.handler
-      CodeUri: ./dist/aws-codebuild-artifacts-to-s3/
-      FunctionName: S3_Inflate
+      CodeUri: ./dist/unzip/
+      FunctionName: Unzip
       Description: Inflates a zip file in S3 to a target bucket in S3.

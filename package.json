@@ -19,13 +19,13 @@
     "compile-test-ts": "tsc -p tsconfig-test.json",
     "transpile-test-js": "BABEL_ENV=test babel dist-test --out-dir dist-test --source-maps",
     "precompile-test": "rm -rf dist-test",
-    "compile-test": "yarn compile-test-ts && yarn transpile-test-js",
-    "build": "yarn compile-src && yarn webpack --mode production",
-    "postbuild": "rm -rf dist/src && yarn package",
+    "compile-test": "npm run compile-test-ts && npm run transpile-test-js",
+    "build": "npm run compile-src && webpack --mode production",
+    "postbuild": "rm -rf dist/src && npm run package",
     "package": "sam package --template-file sam.yaml --s3-bucket sam-artifacts-for-aws-lambda --output-template-file sam.prod.yaml",
     "deploy": "aws cloudformation deploy --template-file ./sam.prod.yaml --capabilities CAPABILITY_IAM --tags 'cli=true' 'automation=true' 'name=Lambda Functions' --stack-name sam-stack-for-aws-lambda",
     "lint": "tslint --fix --format codeFrame --project tsconfig.json 'src/**/*.ts' 'test/**/*.ts'",
-    "pretest": "yarn lint && yarn compile-test",
+    "pretest": "npm run lint && npm run compile-test",
     "test": "nyc ava 'dist-test/test/unit/**/*.test.js'"
   },
   "devDependencies": {

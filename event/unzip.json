@@ -8,7 +8,7 @@
       },
       "actionConfiguration": {
         "configuration": {
-          "FunctionName": "aws-lambda-codebuild-artifact-to-s3-website",
+          "FunctionName": "Unzip",
           "UserParameters": "beta.josephmcasey.com"
         }
       },
