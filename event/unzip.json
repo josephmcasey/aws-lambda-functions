@@ -19,7 +19,7 @@
           "location": {
             "type": "S3",
             "s3Location": {
-              "objectKey": "beta.josephmcasey.co/build_bund/sMhji5T",
+              "objectKey": "beta.josephmcasey.co/build/2OVNRnS",
               "bucketName": "codepipeline-us-west-2-878617224333"
             }
           }
