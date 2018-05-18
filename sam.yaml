@@ -19,4 +19,4 @@ Resources:
       CodeUri: ./dist/unzip/
       FunctionName: Unzip
       Description: Inflates a zip file in S3 to a target bucket in S3.
-      Timeout: 15
+      Timeout: 60
