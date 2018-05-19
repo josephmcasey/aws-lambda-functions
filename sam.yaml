@@ -19,4 +19,5 @@ Resources:
       CodeUri: ./dist/unzip/
       FunctionName: Unzip
       Description: Inflates a zip file in S3 to a target bucket in S3.
-      Timeout: 180
+      Timeout: 300
+      Role: arn:aws:iam::980682543031:role/Lambda@Unzip

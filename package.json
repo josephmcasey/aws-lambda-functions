@@ -16,7 +16,7 @@
   "scripts": {
     "build": "rm -rf dist && npm run lint && tsc -p tsconfig-src.json && webpack --mode production && rm -rf dist/src && npm run package",
     "package": "sam package --template-file sam.yaml --s3-bucket sam-artifacts-for-aws-lambda --output-template-file sam.prod.yaml",
-    "deploy": "aws cloudformation deploy --template-file ./sam.prod.yaml --capabilities CAPABILITY_IAM --tags 'cli=true' 'automation=true' 'name=Lambda Functions' --stack-name sam-stack-for-aws-lambda",
+    "deploy": "aws cloudformation deploy --template-file ./sam.prod.yaml --capabilities CAPABILITY_NAMED_IAM --tags 'cli=true' 'automation=true' 'name=Lambda Functions' --stack-name sam-stack-for-aws-lambda",
     "lint": "tslint --fix --format codeFrame --project tsconfig.json 'src/**/*.ts' 'test/**/*.ts'",
     "pretest": "npm run lint && rm -rf dist-test && tsc -p tsconfig-test.json && BABEL_ENV=test babel dist-test --out-dir dist-test --source-maps",
     "test": "nyc ava 'dist-test/test/unit/**/*.test.js'"

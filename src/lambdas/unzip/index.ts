@@ -8,11 +8,14 @@ const codepipeline = new AWS.CodePipeline({ apiVersion: '2015-07-09' })
 
 export async function handler (event: any, context: AWSLambda.Context, callback: AWSLambda.Callback) {
 
+  const codePipelineJob = event['CodePipeline.job']
+
   try {
     console.log('Entering Unzip#Run')
 
-    const s3OutputBucket = event['CodePipeline.job'].data.actionConfiguration.configuration.UserParameters
-    const s3Input = event['CodePipeline.job'].data.inputArtifacts[0].location.s3Location
+    const s3OutputBucket = codePipelineJob.data.actionConfiguration.configuration.UserParameters
+    const codePipelineInput = codePipelineJob.data.inputArtifacts[0]
+    const s3Input = codePipelineInput.location.s3Location
     const s3InputBucket = s3Input.bucketName
     const s3InputKey = s3Input.objectKey
 
@@ -52,20 +55,20 @@ export async function handler (event: any, context: AWSLambda.Context, callback:
 
     console.log('uploadResults: ', uploadResults)
 
-    const codepipelineParam = {
-      jobId: event['CodePipeline.job'].id,
-      currentRevision: {
-        changeIdentifier: event['CodePipeline.job'].data.inputArtifacts[0].revision,
-        revision: event['CodePipeline.job'].data.inputArtifacts[0].revision
-      }
-    }
+    const pipelineJob = await codepipeline.putJobSuccessResult({ jobId: codePipelineJob.id }).promise()
 
-    const x = await codepipeline.putJobSuccessResult(codepipelineParam).promise()
-
-    callback(null, x)
+    callback(null, pipelineJob)
 
   } catch (err) {
     console.error(err, 'Error occurred')
+    await codepipeline.putJobFailureResult({
+      jobId: codePipelineJob.id,
+      failureDetails: {
+        type: 'ConfigurationError',
+        message: err.message,
+        externalExecutionId: context.awsRequestId
+      }
+    }).promise()
     callback(err)
   }
 }
