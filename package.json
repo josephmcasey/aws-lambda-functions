@@ -1,6 +1,6 @@
 {
   "name": "typescript-aws-lambda",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A package that manages and deploys AWS Lambda functions written in TypeScript.",
   "author": "me@josephmcasey.com",
   "keywords": [
