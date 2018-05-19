@@ -2,7 +2,9 @@ import * as AWS from 'aws-sdk'
 // import mime from 'mime-types'
 import * as JSZip from 'jszip'
 import * as mime from 'mime-types'
+
 const s3 = new AWS.S3({ apiVersion: '2006-03-01', region: 'us-west-2' })
+const codepipeline = new AWS.CodePipeline({ apiVersion: '2015-07-09' })
 
 export async function handler (event: any, context: AWSLambda.Context, callback: AWSLambda.Callback) {
 
@@ -48,7 +50,19 @@ export async function handler (event: any, context: AWSLambda.Context, callback:
       uploadResults.push(await s3.upload(s3Param).promise())
     }
 
-    callback(null, uploadResults)
+    console.log('uploadResults: ', uploadResults)
+
+    const codepipelineParam = {
+      jobId: event['CodePipeline.job'].id,
+      currentRevision: {
+        changeIdentifier: event['CodePipeline.job'].data.inputArtifacts[0].revision,
+        revision: event['CodePipeline.job'].data.inputArtifacts[0].revision
+      }
+    }
+
+    const x = await codepipeline.putJobSuccessResult(codepipelineParam).promise()
+
+    callback(null, x)
 
   } catch (err) {
     console.error(err, 'Error occurred')
