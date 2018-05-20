@@ -1,11 +1,11 @@
 import * as AWS from 'aws-sdk'
-// import mime from 'mime-types'
 import * as JSZip from 'jszip'
 import * as mime from 'mime-types'
 
 const s3 = new AWS.S3({ apiVersion: '2006-03-01', region: 'us-west-2' })
-const codepipeline = new AWS.CodePipeline({ apiVersion: '2015-07-09' })
+const codePipeline = new AWS.CodePipeline({ apiVersion: '2015-07-09' })
 
+// TODO: Assign interface AWSLambdaCodePipelineJobEvent to handler event
 export async function handler (event: any, context: AWSLambda.Context, callback: AWSLambda.Callback) {
 
   const codePipelineJob = event['CodePipeline.job']
@@ -13,23 +13,21 @@ export async function handler (event: any, context: AWSLambda.Context, callback:
   try {
     console.log('Entering Unzip#Run')
 
-    const s3OutputBucket = codePipelineJob.data.actionConfiguration.configuration.UserParameters
+    const outputBucket = codePipelineJob.data.actionConfiguration.configuration.UserParameters
     const codePipelineInput = codePipelineJob.data.inputArtifacts[0]
-    const s3Input = codePipelineInput.location.s3Location
-    const s3InputBucket = s3Input.bucketName
-    const s3InputKey = s3Input.objectKey
+    const { bucketName, objectKey } = codePipelineInput.location.s3Location
 
     console.log(`
-    S3 Output Bucket: ${s3OutputBucket}
-    S3 Input Bucket: ${s3InputBucket}
-    S3 Input Key: ${s3InputKey}
+    S3 Output Bucket: ${outputBucket}
+    S3 Input Bucket: ${bucketName}
+    S3 Input Key: ${objectKey}
   `)
 
-    await s3.waitFor('bucketExists', { Bucket: s3OutputBucket }).promise()
-    await s3.waitFor('bucketExists', { Bucket: s3InputBucket }).promise()
-    await s3.waitFor('objectExists', { Bucket: s3InputBucket, Key: s3InputKey }).promise()
+    await s3.waitFor('bucketExists', { Bucket: outputBucket }).promise()
+    await s3.waitFor('bucketExists', { Bucket: bucketName }).promise()
+    await s3.waitFor('objectExists', { Bucket: bucketName, Key: objectKey }).promise()
 
-    const s3GetResponse: any = await s3.getObject({ Bucket: s3InputBucket, Key: s3InputKey }).promise()
+    const s3GetResponse: any = await s3.getObject({ Bucket: bucketName, Key: objectKey }).promise()
     const zipContentBuffer: Buffer = s3GetResponse.Body
 
     const zip: JSZip = await new JSZip().loadAsync(zipContentBuffer)
@@ -38,13 +36,12 @@ export async function handler (event: any, context: AWSLambda.Context, callback:
 
     let uploadResults = []
 
-    // TODO: Handle dir in Zip Objects - https://stuk.github.io/jszip/documentation/api_zipobject.html
     for (let [key, file] of fileMap) {
       console.log('File: ', key, file)
 
       const mimetype = mime.lookup(file.name) || 'application/octet-stream'
       const s3Param = {
-        Bucket: s3OutputBucket,
+        Bucket: outputBucket,
         Key: file.name,
         Body: await file.async('nodebuffer'),
         ContentType: mimetype
@@ -55,13 +52,13 @@ export async function handler (event: any, context: AWSLambda.Context, callback:
 
     console.log('uploadResults: ', uploadResults)
 
-    const pipelineJob = await codepipeline.putJobSuccessResult({ jobId: codePipelineJob.id }).promise()
+    const pipelineJob = await codePipeline.putJobSuccessResult({ jobId: codePipelineJob.id }).promise()
 
     callback(null, pipelineJob)
 
   } catch (err) {
     console.error(err, 'Error occurred')
-    await codepipeline.putJobFailureResult({
+    await codePipeline.putJobFailureResult({
       jobId: codePipelineJob.id,
       failureDetails: {
         type: 'ConfigurationError',
@@ -72,3 +69,45 @@ export async function handler (event: any, context: AWSLambda.Context, callback:
     callback(err)
   }
 }
+
+/*
+// TODO: Function that validates the structure, logs pertinent information, and returns pertinent data
+async function prevalidateEventStructure (codePipelineJob: AWS.CodePipeline.JobDetails, callback: AWSLambda.Callback) {
+  console.log('Attempting to Validate Event Structure: ', event)
+
+  try {
+
+    await s3.waitFor('bucketExists', { Bucket: outputBucket }).promise()
+    await s3.waitFor('bucketExists', { Bucket: bucketName }).promise()
+    await s3.waitFor('objectExists', { Bucket: bucketName, Key: objectKey }).promise()
+
+  } catch (MissingDataError) {
+
+  }
+
+   console.log(`
+   CodePipeline ID: ${id}
+   Output: ${outputBucket}
+   Input: ${bucketName}/${bucketKey}
+  `)
+
+  return { outputBucket, inputBucket, inputKey, codePipelineId }
+}
+*/
+
+/*
+// TODO: Upload compressed file content to s3, log results, return results
+async function uploadZipFileContentToS3(file) {
+      console.log('Attempting to Upload File: ', file)
+
+      const mimetype = mime.lookup(file.name) || 'application/octet-stream'
+      const s3Param = {
+        Bucket: outputBucket,
+        Key: file.name,
+        Body: await file.async('nodebuffer'),
+        ContentType: mimetype
+      }
+
+      return await s3.upload(s3Param).promise()
+}
+ */
