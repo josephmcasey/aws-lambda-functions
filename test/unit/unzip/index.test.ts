@@ -1,13 +1,14 @@
 import test from 'ava'
 import * as proxyquire from 'proxyquire'
 import invokeLambdaHandler from '../util/invokeLambdaHandler'
-import * as AWS from 'aws-sdk'
-// import MockAWS from './util/mockAWS';
+import MockAWS from '../util/mockAWS';
+
+// TODO: Heavily utilize strictly-typed spies to ensure the proper value is being called on the various third-party APIs.
 
 test('Should throw on missing Source Bucket', async (t) => {
 
   const lambdaCallerIdentity = proxyquire('~/src/lambdas/aws-codebuild-artifacts-to-s3', {
-    'aws-sdk': AWS
+    'aws-sdk': MockAWS
   })
 
   const context = {} as AWSLambda.Context
