@@ -3,14 +3,6 @@ Transform: AWS::Serverless-2016-10-31
 
 Description: A collection of AWS Lambda Functions that support the web application JosephMCasey.com
 Resources:
-  HelloWorld:
-    Type: AWS::Serverless::Function
-    Properties:
-      Runtime: nodejs8.10
-      Handler: index.handler
-      CodeUri: ./dist/hello-world/
-      FunctionName: HelloWorld
-      Description: Example Lambda Function
   Unzip:
     Type: AWS::Serverless::Function
     Properties:

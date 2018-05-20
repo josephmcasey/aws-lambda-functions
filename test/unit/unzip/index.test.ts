@@ -1,6 +1,6 @@
 import test from 'ava'
 import * as proxyquire from 'proxyquire'
-import invokeLambdaHandler from './util/invokeLambdaHandler'
+import invokeLambdaHandler from '../util/invokeLambdaHandler'
 import * as AWS from 'aws-sdk'
 // import MockAWS from './util/mockAWS';
 
