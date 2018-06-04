@@ -1,7 +1,7 @@
 import test from 'ava'
 import * as proxyquire from 'proxyquire'
 import invokeLambdaHandler from '../util/invokeLambdaHandler'
-import MockAWS from '../util/mockAWS';
+import MockAWS from '../util/mockAWS'
 
 // TODO: Heavily utilize strictly-typed spies to ensure the proper value is being called on the various third-party APIs.
 

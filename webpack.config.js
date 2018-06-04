@@ -10,86 +10,87 @@ const lambdaNames = fs.readdirSync(path.join(__dirname, lambdaDir));
 const DIST_DIR = path.join(__dirname, 'dist');
 
 const entry = lambdaNames
-  .reduce((entryMap, lambdaName) => {
-    entryMap[lambdaName] = [
-      'source-map-support/register',
-      path.join(DIST_DIR, lambdaDir, `${lambdaName}/index.js`)
-    ];
-    return entryMap;
-  }, {});
+    .reduce((entryMap, lambdaName) => {
+        entryMap[lambdaName] = [
+            'source-map-support/register',
+            path.join(DIST_DIR, lambdaDir, `${lambdaName}/index.js`)
+        ];
+        return entryMap;
+    }, {});
 
 const externals = ['aws-sdk']
-  .concat(nodeBuiltins)
-  .reduce((externalsMap, moduleName) => {
-    externalsMap[moduleName] = moduleName;
-    return externalsMap;
-  }, {});
+    .concat(nodeBuiltins)
+    .reduce((externalsMap, moduleName) => {
+        externalsMap[moduleName] = moduleName;
+        return externalsMap;
+    }, {});
 
 
 const babelOptions = {
-  presets: [
-    [
-      'env',
-      {
-        // Latest Node.js runtime for AWS Lambda functions
-        targets: {
-          node: '8.10'
-        },
-        modules: false
-      }
-    ]
-  ]
+    presets: [
+        [
+            '@babel/preset-env',
+            {
+                // Latest Node.js runtime for AWS Lambda functions
+                targets: {
+                    node: '8.10'
+                },
+                modules: false
+            }
+        ]
+    ],
+    plugins: ["@babel/plugin-external-helpers"]
 }
 
 const babelRule = {
-  test: /\.js$/,
-  exclude: [],
-  use: {
-    loader: 'babel-loader',
-    options: babelOptions
-  }
+    test: /\.js$/,
+    exclude: [],
+    use: {
+        loader: 'babel-loader',
+        options: babelOptions
+    }
 }
 
 const typeScriptRule = {
-  test: /\.ts$/,
-  exclude: /node_modules/,
-  use: [
-    {
-      loader: 'babel-loader',
-      options: babelOptions
-    },
-    {
-      loader: 'ts-loader'
-    }
-  ]
+    test: /\.ts$/,
+    exclude: /node_modules/,
+    use: [
+        {
+            loader: 'babel-loader',
+            options: babelOptions
+        },
+        {
+            loader: 'ts-loader'
+        }
+    ]
 }
 
 
 module.exports = {
-  entry,
-  externals,
+    entry,
+    externals,
 
-  output: {
-    path: path.join(__dirname, 'dist'),
-    libraryTarget: 'commonjs',
-    filename: '[name]/index.js'
-  },
-
-  target: 'node',
-
-  module: {
-    rules: [
-      babelRule,
-      typeScriptRule
-    ]
-  },
-
-  resolve: {
-    alias: {
-      '~': DIST_DIR
+    output: {
+        path: path.join(__dirname, 'dist'),
+        libraryTarget: 'commonjs',
+        filename: '[name]/index.js'
     },
-    extensions: ['.ts', '.js']
-  },
 
-  devtool: 'source-map'
+    target: 'node',
+
+    module: {
+        rules: [
+            babelRule,
+            typeScriptRule
+        ]
+    },
+
+    resolve: {
+        alias: {
+            '~': DIST_DIR
+        },
+        extensions: ['.ts', '.js']
+    },
+
+    devtool: 'source-map'
 };
