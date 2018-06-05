@@ -1,4 +1,4 @@
-import { listDropboxDirectories, continueListDropboxDirectories, download } from '~/src/lambdas/syncMapsOnline/https'
+import { listDropboxDirectories, continueListDropboxDirectories, download } from './https'
 
 export async function handler (event: any, context: AWSLambda.Context, callback: AWSLambda.Callback) {
 

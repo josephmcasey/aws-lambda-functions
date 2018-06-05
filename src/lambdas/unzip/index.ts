@@ -32,11 +32,11 @@ export async function handler (event: any, context: AWSLambda.Context, callback:
 
     const zip: JSZip = await new JSZip().loadAsync(zipContentBuffer)
 
-    let fileMap = Object.entries(zip.files)
+    const fileMap = Object.entries(zip.files)
 
-    let uploadResults = []
+    const uploadResults = []
 
-    for (let [key, file] of fileMap) {
+    for (const [key, file] of fileMap) {
       console.log('File: ', key, file)
 
       const mimetype = mime.lookup(file.name) || 'application/octet-stream'
