@@ -19,5 +19,3 @@ such as the input and output artifacts.
 
 sam local invoke "HelloWorld" -e event/hello-world.json  -t sam.yaml --debug
 sam local invoke "Unzip" -e event/unzip.json  -t sam.yaml  --log-file ./output.log --profile josephmcasey --debug
-
-<sub>Forked from https://github.com/lifeomic/lambda-typescript-webpack-babel-starter</sub>

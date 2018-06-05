@@ -4,6 +4,7 @@
   "description": "A package that manages and deploys AWS Lambda functions written in TypeScript.",
   "author": "me@josephmcasey.com",
   "keywords": [
+    "ava",
     "aws",
     "lambda",
     "typescript",
@@ -14,14 +15,13 @@
   "homepage": "https://github.com/josephmcasey/aws-lambda_codebuild-artifact-to-s3-website",
   "private": true,
   "scripts": {
-    "clean": "npm run lint && rm -rf dist-test dist",
-    "start": "npm run clean && tsc -p tsconfig-src.json && webpack --watch && rm -rf dist/src",
-    "build": "npm run clean && tsc -p tsconfig-src.json && webpack --mode production && rm -rf dist/src",
-    "package": "sam package --template-file sam.yaml --s3-bucket ll-aws-sam-artifacts --output-template-file sam.prod.yaml",
-    "deploy": "aws cloudformation deploy --template-file ./sam.prod.yaml --capabilities CAPABILITY_NAMED_IAM --tags 'cli=true' 'automation=true' 'name=Lambda Functions' --stack-name sam-stack-for-aws-lambda",
-    "lint": "tslint --fix --format codeFrame --project tsconfig.json 'src/**/*.ts' 'test/**/*.ts'",
-    "pretest": "npm run clean && tsc -p tsconfig-test.json && BABEL_ENV=test babel dist-test --out-dir dist-test --source-maps",
-    "test": "nyc ava 'dist-test/test/unit/**/*.test.js'"
+    "clean": "./scripts/clean.sh",
+    "start": "./scripts/start.sh",
+    "build": "./scripts/build.sh",
+    "package": "./scripts/package.sh",
+    "deploy": "./scripts/deploy.sh",
+    "lint": "./scripts/lint.sh",
+    "test": "./scripts/test.sh"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.49",
@@ -39,6 +39,7 @@
     "babel-loader": "^8.0.0-beta.3",
     "builtin-modules": "^3.0.0",
     "chalk": "^2.4.0",
+    "concurrently": "^3.5.1",
     "nyc": "^11.7.1",
     "proxyquire": "^2.0.1",
     "require-self-ref": "^2.0.1",
