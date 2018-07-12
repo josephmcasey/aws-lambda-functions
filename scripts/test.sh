@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-# pre test
+# test # concurrently --kill-others 'npm run start-watch' 'npm run wp-server'
 npm run clean
-tsc -p tsconfig-test.json
-BABEL_ENV=test babel dist-test --out-dir dist-test --source-maps
 
 # test
-nyc ava 'dist-test/test/unit/**/*.test.js'
+tsc && nyc ava 'test/**/*.test.js'

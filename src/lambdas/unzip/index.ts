@@ -6,7 +6,7 @@ const s3 = new AWS.S3({ apiVersion: '2006-03-01', region: 'us-west-2' })
 const codePipeline = new AWS.CodePipeline({ apiVersion: '2015-07-09' })
 
 // TODO: Assign interface AWSLambdaCodePipelineJobEvent to handler event
-export async function handler (event: any, context: AWSLambda.Context, callback: AWSLambda.Callback) {
+export default async function handler (event: any, context: AWSLambda.Context, callback: AWSLambda.Callback) {
 
   const codePipelineJob = event['CodePipeline.job']
 

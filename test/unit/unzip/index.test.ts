@@ -1,5 +1,7 @@
 import test from 'ava'
+import handler from "../../../src/lambdas/unzip/index";
 
 test('Should throw on missing Destination Bucket', async (t) => {
-  return true
+    console.log(handler)
+    t.pass();
 });

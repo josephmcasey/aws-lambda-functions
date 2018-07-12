@@ -1,8 +1,11 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
     "rootDir": ".",
-    "baseUrl": ".",
-    "outDir": "./dist",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "target": "es5",
+    "lib": [ "es2015", "es2017", "DOM" ],
     "noUnusedLocals": true,
     "allowSyntheticDefaultImports": false,
     "noImplicitAny": true,
@@ -10,18 +13,31 @@
     "alwaysStrict": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
-    "allowJs": true,
-    "moduleResolution": "node",
-    "target": "ESNext",
     "pretty": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "paths": {
-      "~/*": ["./*"]
-    }
+    "declaration": true,
+    "preserveConstEnums": true,
+    "emitDecoratorMetadata": true,
+    "types" : [
+      "aws-lambda",
+      "caseless",
+      "form-data",
+      "jszip",
+      "mime-types",
+      "node",
+      "proxyquire",
+      "request",
+      "tough-cookie"
+    ],
+    "typeRoots": [
+      "./types",
+      "node_modules/@types"
+    ]
   },
   "include": [
     "src/**/*",
-    "test/**/*"
+    "test/**/*",
+    "types/*"
   ]
 }

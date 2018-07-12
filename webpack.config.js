@@ -1,30 +1,20 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 /* eslint-disable security/detect-object-injection */
 const path = require('path');
-const fs = require('fs');
-const nodeBuiltins = require('builtin-modules');
-
-const lambdaDir = 'src/lambdas';
-const lambdaNames = fs.readdirSync(path.join(__dirname, lambdaDir));
-
-const DIST_DIR = path.join(__dirname, 'dist');
+const lambdaNames = require('fs').readdirSync(path.join(__dirname, 'src/lambdas'));
 
 const entry = lambdaNames
     .reduce((entryMap, lambdaName) => {
-        entryMap[lambdaName] = [
-            'source-map-support/register',
-            path.join(DIST_DIR, lambdaDir, `${lambdaName}/index.js`)
-        ];
-        return entryMap;
-    }, {});
+        entryMap[lambdaName] = [ path.join(__dirname, `src/lambdas/${lambdaName}/index.ts`) ]
+        return entryMap
+    }, {})
 
-const externals = ['aws-sdk']
-    .concat(nodeBuiltins)
-    .reduce((externalsMap, moduleName) => {
+const externals = require('builtin-modules').reduce((externalsMap, moduleName) => {
         externalsMap[moduleName] = moduleName;
         return externalsMap;
-    }, {});
-
+    }, {
+        'aws-sdk': 'aws-sdk'
+    });
 
 const babelOptions = {
     presets: [
@@ -38,17 +28,7 @@ const babelOptions = {
                 modules: false
             }
         ]
-    ],
-    plugins: ["@babel/plugin-external-helpers"]
-}
-
-const babelRule = {
-    test: /\.js$/,
-    exclude: [],
-    use: {
-        loader: 'babel-loader',
-        options: babelOptions
-    }
+    ]
 }
 
 const typeScriptRule = {
@@ -79,15 +59,12 @@ module.exports = {
     target: 'node',
 
     module: {
-        rules: [
-            babelRule,
-            typeScriptRule
-        ]
+        rules: [typeScriptRule]
     },
 
     resolve: {
         alias: {
-            '~': DIST_DIR
+            "~": path.resolve(__dirname)
         },
         extensions: ['.ts', '.js']
     },
