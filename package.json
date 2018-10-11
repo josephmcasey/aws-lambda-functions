@@ -11,7 +11,7 @@
     "webpack",
     "babel"
   ],
-  "homepage": "https://github.com/josephmcasey/aws-lambda_codebuild-artifact-to-s3-website",
+  "homepage": "https://github.com/josephmcasey/aws-lambda-functions",
   "private": true,
   "scripts": {
     "build": "rm -rf dist && npm run lint && tsc -p tsconfig-src.json && webpack --mode production && rm -rf dist/src && npm run package",
